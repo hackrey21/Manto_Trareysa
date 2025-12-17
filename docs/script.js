@@ -376,6 +376,8 @@ document.addEventListener("DOMContentLoaded", () => {
   renderMantenimientos();
 });
 
+const fotoAntesInput = document.getElementById("fotoAntes");
+const fotoDespuesInput = document.getElementById("fotoDespues");
 
 function obtenerImagenBase64(fileInput) {
   return new Promise((resolve) => {
