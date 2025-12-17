@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mantenimientos Avanzados</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#1565c0" />
+  </head>
+
+  <body>
+    <header>
+      <h1>Control de Mantenimientos</h1>
+      <nav>
+        <button id="btnEquipos" class="activo">Equipos</button>
+        <button id="btnMantenimientos">Mantenimientos</button>
+        <button id="btnCronograma">Cronograma</button>
+      </nav>
+    </header>
+
+    <main>
+      <!-- Resumen -->
+      <section id="resumen" class="resumen">
+        <div class="card" id="cardOk">OK: 0</div>
+        <div class="card" id="cardProximo">Próximos: 0</div>
+        <div class="card" id="cardVencido">Vencidos: 0</div>
+      </section>
+
+      <!-- Equipos -->
+      <section id="equiposSection">
+        <h2>Registrar Equipo</h2>
+        <form id="formEquipo">
+          <input
+            type="text"
+            id="nombre"
+            placeholder="Nombre del equipo"
+            required
+          />
+          <input
+            type="text"
+            id="numeroSerie"
+            placeholder="ID de computadora"
+            required
+          />
+          <input type="text" id="ubicacion" placeholder="Ubicación" />
+          <input type="text" id="responsable" placeholder="Responsable" />
+          <button type="submit">Guardar equipo</button>
+        </form>
+
+        <input
+          type="text"
+          id="buscador"
+          placeholder="Buscar por nombre, serie o estado"
+        />
+
+        <h2>Lista de Equipos</h2>
+        <div class="container-class">
+          <table id="tablaEquipos">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>ID</th>
+                <th>Próximo mantenimiento</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Mantenimientos -->
+      <section id="mantenimientosSection" class="oculto">
+        <h2>Registrar Mantenimiento</h2>
+        <form id="formMantenimiento">
+          <!-- Datos empleado y equipo -->
+          <select id="equipoSelect" required></select>
+          <input
+            type="text"
+            id="nombreEmpleado"
+            placeholder="Nombre del empleado"
+            required
+          />
+          <input
+            type="text"
+            id="departamento"
+            placeholder="Departamento"
+            required
+          />
+          <input type="text" id="puesto" placeholder="Puesto" required />
+          <input type="date" id="fechaMantenimiento" required />
+
+          <!-- Tareas preventivas -->
+          <fieldset>
+            <legend>Mantenimiento Preventivo</legend>
+            <div class="prev">
+              <div class="enti">
+                <h4>Hardware</h4>
+                <label
+                  ><input
+                    type="checkbox"
+                    name="tareas"
+                    value="prev_limpieza_monitor"
+                  />
+                  Limpieza Monitor / Mouse / Teclado</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="tareas"
+                    value="prev_limpieza_interna"
+                  />
+                  Limpieza Interna del Equipo</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="tareas"
+                    value="prev_verificar_conexiones"
+                  />
+                  Verificar Conexiones</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="tareas"
+                    value="prev_pasta_termica"
+                  />
+                  Aplicación de Pasta Térmica</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="tareas"
+                    value="prev_limpieza_ventiladores"
+                  />
+                  Limpieza y Revisión de Ventiladores</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="tareas"
+                    value="prev_limpieza_externa"
+                  />
+                  Limpieza Externa del Equipo</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="tareas"
+                    value="prev_limpieza_ram"
+                  />
+                  Limpieza de Ranuras RAM</label
+                >
+              </div>
+              <div class="enti">
+                <h4>Software</h4>
+                <label
+                  ><input
+                    type="checkbox"
+                    name="tareas"
+                    value="prev_eliminar_temporales"
+                  />
+                  Eliminar Temporales</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="tareas"
+                    value="prev_actualizacion_software"
+                  />
+                  Actualización de Software</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="tareas"
+                    value="prev_antivirus"
+                  />
+                  Análisis de Antivirus</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="tareas"
+                    value="prev_desinstalar_programas"
+                  />
+                  Desinstalar Programas sin uso</label
+                >
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Tareas correctivas -->
+          <fieldset>
+            <legend>Mantenimiento Correctivo</legend>
+            <div class="prev">
+              <div class="enti">
+                <h4>Hardware</h4>
+                <label
+                  ><input
+                    type="checkbox"
+                    name="tareasCorrectivas"
+                    value="corr_reemplazo_piezas"
+                  />
+                  Reemplazo de Piezas</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="tareasCorrectivas"
+                    value="corr_cambio_monitor"
+                  />
+                  Cambio de Monitor / Mouse / Teclado</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="tareasCorrectivas"
+                    value="corr_aumento_ram"
+                  />
+                  Aumento de RAM</label
+                >
+              </div>
+              <div class="enti">
+                <h4>Software</h4>
+                <label
+                  ><input
+                    type="checkbox"
+                    name="tareasCorrectivas"
+                    value="corr_formateo"
+                  />
+                  Formateo</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="tareasCorrectivas"
+                    value="corr_recuperacion_so"
+                  />
+                  Recuperación del S.O</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="tareasCorrectivas"
+                    value="corr_reinstalacion_software"
+                  />
+                  Reinstalación de Software / Driver</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="tareasCorrectivas"
+                    value="corr_eliminar_virus"
+                  />
+                  Eliminación de Virus</label
+                >
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- fotos -->
+
+          <div>
+            <label>Foto antes:</label>
+            <input type="file" id="fotoAntes" accept="image/*" />
+          </div>
+          <div>
+            <label>Foto después:</label>
+            <input type="file" id="fotoDespues" accept="image/*" />
+          </div>
+
+          <!-- Firmas -->
+          <div>
+            <button type="button" class="btnFirma" data-target="firmaTecnico">
+              Firmar técnico
+            </button>
+            <canvas id="firmaTecnico" width="300" height="100" hidden></canvas>
+          </div>
+
+          <div>
+            <button type="button" class="btnFirma" data-target="firmaEmpleado">
+              Firmar empleado
+            </button>
+            <canvas id="firmaEmpleado" width="300" height="100" hidden></canvas>
+          </div>
+
+          <button type="submit">Guardar Mantenimiento</button>
+        </form>
+        <div class="prev">
+          <h2>Historial de Mantenimientos</h2>
+          <button class="ex"
+            onclick="generarExcelMensual( new Date().getMonth()+1, new Date().getFullYear(), 8 )"
+          >
+            📊 Generar Excel del Mes
+          </button>
+        </div>
+        <div class="filtros-mantenimientos">
+          <input
+            type="text"
+            id="buscadorMantenimientos"
+            placeholder="Buscar por equipo, empleado o ID"
+          />
+          <select id="filtroDepartamento">
+            <option value="">Todos los departamentos</option>
+          </select>
+        </div>
+
+        <div class="container-class">
+          <table id="tablaMantenimientos">
+            <thead>
+              <tr>
+                <th>Equipo</th>
+                <th>Empleado</th>
+                <th>Departamento</th>
+                <th>Puesto</th>
+                <th>Fecha</th>
+                <th>Tareas</th>
+                <th>Firmas</th>
+                <th>PDFS</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+      <!-- Cronograma -->
+      <section id="cronogramaExactoSection" class="oculto">
+        <div class="cronograma-header">
+          <h1>
+            Cronograma de Mantenimientos de Equipos de Cómputo -
+            <span id="anioCronograma"></span>
+          </h1>
+        </div>
+
+        <div class="tabla-wrapper">
+          <table id="cronogramaExacto">
+            <thead id="headCronogramaExacto"></thead>
+            <tbody>
+              <tr id="filaAreas"></tr>
+            </tbody>
+            <tbody id="bodyCronogramaExacto"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("service-worker.js")
+          .then(() => console.log("Service Worker registrado."))
+          .catch((err) =>
+            console.log("Error al registrar el Service Worker:", err)
+          );
+      }
+    </script>
+
+    <div id="modalFirma" class="modal-firma oculto">
+      <div class="modal-contenido">
+        <h2>Firma</h2>
+
+        <canvas id="canvasFirmaFull"></canvas>
+
+        <div class="acciones-firma">
+          <button id="limpiarFirmaFull">Limpiar</button>
+          <button id="guardarFirmaFull">Guardar</button>
+          <button id="cerrarFirmaFull">Cancelar</button>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  </body>
+</html>
